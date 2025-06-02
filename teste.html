@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Jaegar Resto</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: sans-serif;
+      background-color: #1f1d2b;
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+    header {
+      padding: 20px;
+      background-color: #252836;
+    }
+    header h1 {
+      margin: 0;
+      font-size: 24px;
+    }
+    header p {
+      margin: 4px 0 16px;
+      color: #aaa;
+    }
+    header input {
+      width: 100%;
+      max-width: 300px;
+      padding: 8px;
+      border-radius: 6px;
+      border: none;
+      box-sizing: border-box;
+    }
+    main {
+      display: flex;
+      flex: 1;
+      gap: 20px;
+      padding: 20px;
+    }
+    #menu {
+      flex: 3;
+    }
+    nav {
+      margin-bottom: 20px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    nav button {
+      background-color: #393c49;
+      color: white;
+      padding: 8px 12px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      flex: 1 1 auto;
+      min-width: 100px;
+      white-space: nowrap;
+      transition: background-color 0.3s;
+    }
+    nav button.active {
+      background-color: #ea7c69;
+      color: white;
+    }
+    .dish-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+      gap: 20px;
+    }
+    .dish {
+      background-color: #2d303e;
+      padding: 16px;
+      border-radius: 12px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      cursor: pointer;
+    }
+    .dish img {
+      width: 100%;
+      max-width: 120px;
+      height: auto;
+      border-radius: 8px;
+      margin-bottom: 8px;
+      background-color: #444;
+    }
+    .dish p {
+      margin: 0 0 8px;
+      font-weight: bold;
+    }
+    .dish span {
+      color: #fbbf24;
+      display: block;
+      margin-bottom: 4px;
+    }
+    #order {
+      flex: 2;
+      background-color: #2d303e;
+      padding: 20px;
+      border-left: 1px solid #393c49;
+      display: flex;
+      flex-direction: column;
+    }
+    #order h2 {
+      margin-top: 0;
+    }
+    #order button {
+      margin-right: 10px;
+      background-color: #393c49;
+      color: #fff;
+      padding: 8px 12px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+    table {
+      width: 100%;
+      margin-top: 20px;
+      border-collapse: collapse;
+    }
+    table th, table td {
+      padding: 10px;
+      text-align: left;
+    }
+    table td {
+      color: #ccc;
+    }
+    table tr:not(:last-child) {
+      border-bottom: 1px solid #393c49;
+    }
+    #order p {
+      text-align: right;
+      margin-top: 20px;
+    }
+    #finalizar {
+      width: 100%;
+      background-color: #ea7c69;
+      padding: 12px;
+      margin-top: 20px;
+      border-radius: 12px;
+      border: none;
+      color: #fff;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+    #finalizar:disabled {
+      background-color: #555;
+      cursor: not-allowed;
+      opacity: 0.6;
+    }
+    @media (max-width: 768px) {
+      main {
+        flex-direction: column;
+        padding: 10px;
+      }
+      #menu, #order {
+        flex: none;
+        width: 100%;
+        border-left: none;
+        padding: 0;
+        margin-bottom: 20px;
+      }
+      nav button {
+        flex: 1 1 45%;
+        min-width: auto;
+      }
+      .dish-list {
+        grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+      }
+    }
+    @media (max-width: 400px) {
+      nav button {
+        flex: 1 1 100%;
+      }
+      header input {
+        max-width: 100%;
+      }
+    }
+        .botoes {
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+      height: 70px;
+      background-color: rgb(32, 28, 44);
+      display: flex;
+      justify-content: space-evenly;
+      align-items: center;
+      z-index: 1000;
+    }
+    .imgbotoes {
+      width: 30px;
+      height: 30px;
+    }
+    @media (max-width: 400px) {
+      .imgbotoes {
+        width: 24px;
+        height: 24px;
+      }
+      .imglugar {
+        width: 60px;
+        height: 60px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <h1>Jaegar Resto</h1>
+    <p>Faça seu pedido</p>
+    <input type="text" id="search" placeholder="Buscar..." />
+  </header>
+
+  <main>
+    <section id="menu">
+      <h2>CARDÁPIO</h2>
+      <nav>
+        <button data-category="all" class="active">Todos</button>
+        <button data-category="espetos">Espetos</button>
+        <button data-category="porcoes">Porções</button>
+        <button data-category="sopas">Sopas</button>
+        <button data-category="lanches">Lanches</button>
+        <button data-category="pizzas">Pizzas</button>
+        <button data-category="bebidas">Bebidas</button>
+        <button data-category="sobremesas">Sobremesas</button>
+      </nav>
+
+      <div class="dish-list" id="dish-list">
+        <!-- Os pratos estão definidos no JavaScript -->
+      </div>
+    </section>
+
+    <section id="order">
+      <h2>Seu Pedido</h2>
+      <table id="order-table">
+        <thead>
+          <tr>
+            <th>Item</th>
+            <th>Qtd</th>
+            <th>Preço</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+        </table>
+        <p id="total">Total: R$ 0,00</p>
+        <button id="finalizar" disabled>Finalizar Pedido</button>
+
+    </section>
+  </main>
+    <div class="botoes">
+        <a href="#"><img class="imgbotoes" src="imagem/Paypal.svg" alt="Delivery"></a>
+        <a href="#"><img class="imgbotoes" src="imagem/search.svg" alt="Comida"></a>
+        <a href="#"><img class="imgbotoes" src="imagem/Home.svg" alt="Início"></a>
+        <a href="#"><img class="imgbotoes" src="imagem/Notification.svg" alt="Notificações"></a>
+        <a href="#"><img class="imgbotoes" src="imagem/Customer.svg" alt="Perfil"></a>
+    </div>
+  <script>
+    const dishes = [
+      { name: "Espetinho de Churrasco", price: 10, category: "espetos" },
+      { name: "Espetinho de Picanha", price: 50, category: "espetos" },
+      { name: "Espetinho de Frango", price: 30, category: "espetos" },
+      { name: "Porção de Peixe", price: 25, category: "porcoes" },
+      { name: "Porção de Batata", price: 20, category: "porcoes" },
+      { name: "Porção de Calabresa", price: 25, category: "porcoes" },
+      { name: "Porção de Torresmo", price: 30, category: "porcoes" },
+      { name: "Feijoada", price: 20, category: "sopas" },
+      { name: "X-Tudo", price: 23, category: "lanches" },
+      { name: "Pastel", price: 12, category: "lanches" },
+      { name: "Coxinha", price: 10, category: "lanches" },
+      { name: "Tapioca", price: 9, category: "lanches" },
+      { name: "Pamonha", price: 8, category: "lanches" },
+      { name: "Torta de Frango", price: 10, category: "lanches" },
+      { name: "Pizza", price: 50, category: "pizzas" },
+      { name: "Café", price: 3, category: "bebidas" },
+      { name: "Suco", price: 5, category: "bebidas" },
+      { name: "Coca Cola 2L", price: 15, category: "bebidas" },
+      { name: "Cerveja", price: 6, category: "bebidas" },
+      { name: "Bolo", price: 7, category: "sobremesas" },
+      { name: "Bolinho de carne com molho de pimenta", price: 15, category: "porcoes" },
+    ];
+
+    const dishList = document.getElementById('dish-list');
+    const orderTableBody = document.querySelector('#order-table tbody');
+    const totalDisplay = document.getElementById('total');
+    const finalizeBtn = document.getElementById('finalizar');
+
+    const order = {};
+
+    function renderDishes(filter = 'all') {
+      dishList.innerHTML = '';
+      const filtered = dishes.filter(d => filter === 'all' || d.category === filter);
+      filtered.forEach(dish => {
+        const div = document.createElement('div');
+        div.className = 'dish';
+        div.innerHTML = `
+          <img src="#" alt="${dish.name}">
+          <p>${dish.name}</p>
+          <span>R$ ${dish.price.toFixed(2)}</span>
+        `;
+        div.onclick = () => addToOrder(dish);
+        dishList.appendChild(div);
+      });
+    }
+
+    function renderOrder() {
+      orderTableBody.innerHTML = '';
+      let total = 0;
+      for (let name in order) {
+        const item = order[name];
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td>${name}</td>
+          <td>
+            <button onclick="decrement('${name}')">-</button>
+            ${item.quantity}
+            <button onclick="increment('${name}')">+</button>
+          </td>
+          <td>R$ ${(item.price * item.quantity).toFixed(2)}</td>
+        `;
+        orderTableBody.appendChild(tr);
+        total += item.price * item.quantity;
+      }
+      totalDisplay.textContent = `Total: R$ ${total.toFixed(2)}`;
+
+      // Ativa ou desativa o botão finalizar
+      finalizeBtn.disabled = Object.keys(order).length === 0;
+    }
+
+    function addToOrder(dish) {
+      if (order[dish.name]) {
+        order[dish.name].quantity++;
+      } else {
+        order[dish.name] = { price: dish.price, quantity: 1 };
+      }
+      renderOrder();
+    }
+
+    function increment(name) {
+      order[name].quantity++;
+      renderOrder();
+    }
+
+    function decrement(name) {
+      order[name].quantity--;
+      if (order[name].quantity <= 0) {
+        delete order[name];
+      }
+      renderOrder();
+    }
+
+    finalizeBtn.onclick = () => {
+      window.location.href = "teste2.html";
+    };
+
+    const filterButtons = document.querySelectorAll('nav button');
+    filterButtons.forEach(button => {
+      button.addEventListener('click', () => {
+        filterButtons.forEach(btn => btn.classList.remove('active'));
+        button.classList.add('active');
+        renderDishes(button.dataset.category);
+      });
+    });
+
+    document.getElementById('search').addEventListener('input', function() {
+      const query = this.value.toLowerCase();
+      const filtered = dishes.filter(d => d.name.toLowerCase().includes(query));
+      dishList.innerHTML = '';
+      filtered.forEach(dish => {
+        const div = document.createElement('div');
+        div.className = 'dish';
+        div.innerHTML = `
+          <img src="#" alt="${dish.name}">
+          <p>${dish.name}</p>
+          <span>R$ ${dish.price.toFixed(2)}</span>
+        `;
+        div.onclick = () => addToOrder(dish);
+        dishList.appendChild(div);
+      });
+    });
+
+    renderDishes();
+    renderOrder(); // para atualizar o botão finalizar na carga inicial
+  </script>
+</body>
+</html>

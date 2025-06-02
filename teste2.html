@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pagamento - Jaegar Resto</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: sans-serif;
+            background-color: #1f1d2b;
+            color: #fff;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            background-color: #2d303e;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+            width: 90%;
+            max-width: 400px;
+            text-align: center;
+        }
+
+        h1 {
+            margin-bottom: 10px;
+        }
+
+        p {
+            color: #aaa;
+            margin-bottom: 30px;
+        }
+
+        .payment-method {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        label {
+            background-color: #393c49;
+            padding: 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            transition: background-color 0.3s;
+        }
+
+        label:hover {
+            background-color: #ea7c69;
+        }
+
+        input[type="radio"] {
+            margin-right: 10px;
+            accent-color: #ea7c69;
+        }
+
+        .btn {
+            width: 100%;
+            margin-top: 25px;
+            background-color: #ea7c69;
+            border: none;
+            padding: 12px;
+            border-radius: 10px;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .btn:hover {
+            background-color: #d86a58;
+        }
+
+        /* Modal */
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.7);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+
+        .modal-content {
+            background-color: #2d303e;
+            padding: 30px;
+            border-radius: 12px;
+            text-align: center;
+            max-width: 300px;
+        }
+
+        .modal-content h2 {
+            margin-bottom: 10px;
+        }
+
+        .modal-content p {
+            color: #ccc;
+            margin-bottom: 20px;
+        }
+
+        .modal-content button {
+            background-color: #ea7c69;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .modal-content button:hover {
+            background-color: #d86a58;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Pagamento</h1>
+        <p>Selecione a forma de pagamento</p>
+
+        <div class="payment-method">
+            <label>
+                <input type="radio" name="payment" value="pix" checked>
+                Pix
+            </label>
+            <label>
+                <input type="radio" name="payment" value="credito">
+                Cartão de Crédito
+            </label>
+            <label>
+                <input type="radio" name="payment" value="debito">
+                Cartão de Débito
+            </label>
+            <label>
+                <input type="radio" name="payment" value="dinheiro">
+                Dinheiro
+            </label>
+        </div>
+
+        <button class="btn" onclick="confirmarPagamento()">Confirmar Pagamento</button>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal" id="modal">
+        <div class="modal-content">
+            <h2>Pagamento Confirmado!</h2>
+            <p>Obrigado pela preferência.</p>
+            <button onclick="fecharModal()">Voltar ao Início</button>
+        </div>
+    </div>
+
+    <script>
+        function confirmarPagamento() {
+            const pagamento = document.querySelector('input[name="payment"]:checked').value;
+            const modal = document.getElementById('modal');
+            modal.style.display = 'flex';
+        }
+
+        function fecharModal() {
+            const modal = document.getElementById('modal');
+            modal.style.display = 'none';
+            window.location.href = "teste2.html"; // Voltar para a página inicial
+        }
+    </script>
+
+</body>
+</html>
