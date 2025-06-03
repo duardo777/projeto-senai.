@@ -13,10 +13,12 @@
       display: flex;
       flex-direction: column;
       min-height: 100vh;
+      padding-bottom: 80px;
     }
     header {
       padding: 20px;
       background-color: #252836;
+      position: relative;
     }
     header h1 {
       margin: 0;
@@ -79,6 +81,7 @@
       align-items: center;
       text-align: center;
       cursor: pointer;
+      position: relative;
     }
     .dish img {
       width: 100%;
@@ -181,7 +184,7 @@
         max-width: 100%;
       }
     }
-        .botoes {
+    .botoes {
       position: fixed;
       bottom: 0;
       width: 100%;
@@ -196,6 +199,85 @@
       width: 30px;
       height: 30px;
     }
+    .admin-btn {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      background-color: #ea7c69;
+      color: white;
+      padding: 8px 12px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0,0,0,0.7);
+      z-index: 1001;
+      justify-content: center;
+      align-items: center;
+    }
+    .modal-content {
+      background-color: #252836;
+      padding: 20px;
+      border-radius: 10px;
+      width: 90%;
+      max-width: 500px;
+    }
+    .modal h2 {
+      margin-top: 0;
+    }
+    .modal input, .modal select {
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+      border-radius: 5px;
+      border: 1px solid #393c49;
+      background-color: #2d303e;
+      color: white;
+    }
+    .modal-buttons {
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+      margin-top: 20px;
+    }
+    .modal-buttons button {
+      padding: 8px 15px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    .modal-buttons .save {
+      background-color: #ea7c69;
+      color: white;
+    }
+    .modal-buttons .cancel {
+      background-color: #393c49;
+      color: white;
+    }
+    .delete-dish {
+      position: absolute;
+      top: 5px;
+      right: 5px;
+      background-color: #ff4d4d;
+      color: white;
+      border: none;
+      border-radius: 50%;
+      width: 20px;
+      height: 20px;
+      font-size: 12px;
+      cursor: pointer;
+      display: none;
+    }
+    .admin-mode .delete-dish {
+      display: block;
+    }
     @media (max-width: 400px) {
       .imgbotoes {
         width: 24px;
@@ -206,6 +288,9 @@
         height: 60px;
       }
     }
+    .Buscar{
+      text-align: right;
+    }
   </style>
 </head>
 
@@ -213,11 +298,15 @@
   <header>
     <h1>Jaegar Resto</h1>
     <p>Faça seu pedido</p>
-    <input type="text" id="search" placeholder="Buscar..." />
+
+    <button class="admin-btn" id="admin-btn">Admin</button>
   </header>
 
   <main>
     <section id="menu">
+      <div class="Buscar">
+      <input type="text" id="search" placeholder="Buscar..." />
+      </div>
       <h2>CARDÁPIO</h2>
       <nav>
         <button data-category="all" class="active">Todos</button>
@@ -249,18 +338,55 @@
         </table>
         <p id="total">Total: R$ 0,00</p>
         <button id="finalizar" disabled>Finalizar Pedido</button>
-
     </section>
   </main>
-    <div class="botoes">
-        <a href="#"><img class="imgbotoes" src="imagem/Paypal.svg" alt="Delivery"></a>
-        <a href="#"><img class="imgbotoes" src="imagem/search.svg" alt="Comida"></a>
-        <a href="#"><img class="imgbotoes" src="imagem/Home.svg" alt="Início"></a>
-        <a href="#"><img class="imgbotoes" src="imagem/Notification.svg" alt="Notificações"></a>
-        <a href="#"><img class="imgbotoes" src="imagem/Customer.svg" alt="Perfil"></a>
+
+  <!-- Modal de Login Admin -->
+  <div class="modal" id="login-modal">
+    <div class="modal-content">
+      <h2>Login Administrativo</h2>
+      <input type="email" id="admin-email" placeholder="Email administrativo">
+      <input type="password" id="admin-password" placeholder="Senha">
+      <div class="modal-buttons">
+        <button class="cancel" onclick="document.getElementById('login-modal').style.display='none'">Cancelar</button>
+        <button class="save" id="login-btn">Entrar</button>
+      </div>
     </div>
+  </div>
+
+  <!-- Modal de Adicionar Prato -->
+  <div class="modal" id="add-dish-modal">
+    <div class="modal-content">
+      <h2>Adicionar Novo Prato</h2>
+      <input type="text" id="dish-name" placeholder="Nome do prato">
+      <input type="number" id="dish-price" placeholder="Preço" step="0.01">
+      <select id="dish-category">
+        <option value="espetos">Espetos</option>
+        <option value="porcoes">Porções</option>
+        <option value="sopas">Sopas</option>
+        <option value="lanches">Lanches</option>
+        <option value="pizzas">Pizzas</option>
+        <option value="bebidas">Bebidas</option>
+        <option value="sobremesas">Sobremesas</option>
+      </select>
+      <div class="modal-buttons">
+        <button class="cancel" onclick="document.getElementById('add-dish-modal').style.display='none'">Cancelar</button>
+        <button class="save" id="save-dish-btn">Salvar</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="botoes">
+    <a href="#"><img class="imgbotoes" src="imagem/Paypal.svg" alt="Delivery"></a>
+    <a href="#"><img class="imgbotoes" src="imagem/search.svg" alt="Comida"></a>
+    <a href="#"><img class="imgbotoes" src="imagem/Home.svg" alt="Início"></a>
+    <a href="#"><img class="imgbotoes" src="imagem/Notification.svg" alt="Notificações"></a>
+    <a href="#"><img class="imgbotoes" src="imagem/Customer.svg" alt="Perfil"></a>
+  </div>
+
   <script>
-    const dishes = [
+    // Dados iniciais
+    let dishes = [
       { name: "Espetinho de Churrasco", price: 10, category: "espetos" },
       { name: "Espetinho de Picanha", price: 50, category: "espetos" },
       { name: "Espetinho de Frango", price: 30, category: "espetos" },
@@ -284,26 +410,51 @@
       { name: "Bolinho de carne com molho de pimenta", price: 15, category: "porcoes" },
     ];
 
+    // Configuração do admin (em produção, isso deve ser verificado no servidor)
+    const ADMIN_EMAIL = "admin@jaegar.com";
+    const ADMIN_PASSWORD = "admin123";
+    let isAdmin = false;
+
+    // Elementos do DOM
     const dishList = document.getElementById('dish-list');
     const orderTableBody = document.querySelector('#order-table tbody');
     const totalDisplay = document.getElementById('total');
     const finalizeBtn = document.getElementById('finalizar');
+    const adminBtn = document.getElementById('admin-btn');
+    const loginModal = document.getElementById('login-modal');
+    const addDishModal = document.getElementById('add-dish-modal');
 
     const order = {};
 
+    // Funções principais
     function renderDishes(filter = 'all') {
       dishList.innerHTML = '';
       const filtered = dishes.filter(d => filter === 'all' || d.category === filter);
+      
       filtered.forEach(dish => {
         const div = document.createElement('div');
         div.className = 'dish';
         div.innerHTML = `
+          <button class="delete-dish" data-name="${dish.name}">×</button>
           <img src="#" alt="${dish.name}">
           <p>${dish.name}</p>
           <span>R$ ${dish.price.toFixed(2)}</span>
         `;
-        div.onclick = () => addToOrder(dish);
+        
+        // Se não for admin, o clique adiciona ao pedido
+        if (!isAdmin) {
+          div.onclick = () => addToOrder(dish);
+        }
+        
         dishList.appendChild(div);
+      });
+
+      // Adiciona eventos para os botões de deletar
+      document.querySelectorAll('.delete-dish').forEach(btn => {
+        btn.onclick = (e) => {
+          e.stopPropagation();
+          deleteDish(btn.dataset.name);
+        };
       });
     }
 
@@ -353,10 +504,81 @@
       renderOrder();
     }
 
+    function deleteDish(name) {
+      if (confirm(`Tem certeza que deseja remover "${name}" do cardápio?`)) {
+        dishes = dishes.filter(dish => dish.name !== name);
+        renderDishes(document.querySelector('nav button.active').dataset.category);
+      }
+    }
+
+    function addNewDish() {
+      const name = document.getElementById('dish-name').value.trim();
+      const price = parseFloat(document.getElementById('dish-price').value);
+      const category = document.getElementById('dish-category').value;
+
+      if (!name || isNaN(price)) {
+        alert('Por favor, preencha todos os campos corretamente.');
+        return;
+      }
+
+      // Verifica se o prato já existe
+      if (dishes.some(dish => dish.name.toLowerCase() === name.toLowerCase())) {
+        alert('Já existe um prato com esse nome no cardápio.');
+        return;
+      }
+
+      dishes.push({ name, price, category });
+      addDishModal.style.display = 'none';
+      renderDishes(document.querySelector('nav button.active').dataset.category);
+      
+      // Limpa os campos
+      document.getElementById('dish-name').value = '';
+      document.getElementById('dish-price').value = '';
+    }
+
+    // Funções de modal
+    function toggleAdminMode() {
+      if (isAdmin) {
+        // Sair do modo admin
+        isAdmin = false;
+        adminBtn.textContent = 'Admin';
+        document.body.classList.remove('admin-mode');
+      } else {
+        // Entrar no modo admin (mostrar modal de login)
+        loginModal.style.display = 'flex';
+      }
+    }
+
+    function attemptLogin() {
+      const email = document.getElementById('admin-email').value;
+      const password = document.getElementById('admin-password').value;
+
+      if (email === ADMIN_EMAIL && password === ADMIN_PASSWORD) {
+        isAdmin = true;
+        adminBtn.textContent = 'Sair do Admin';
+        document.body.classList.add('admin-mode');
+        loginModal.style.display = 'none';
+        
+        // Limpa os campos
+        document.getElementById('admin-email').value = '';
+        document.getElementById('admin-password').value = '';
+      } else {
+        alert('Email ou senha incorretos.');
+      }
+    }
+
+    // Event Listeners
     finalizeBtn.onclick = () => {
-      window.location.href = "teste2.html";
+      window.location.href = "Pagamento.html";
     };
 
+    adminBtn.onclick = toggleAdminMode;
+
+    document.getElementById('login-btn').onclick = attemptLogin;
+
+    document.getElementById('save-dish-btn').onclick = addNewDish;
+
+    // Filtros de categoria
     const filterButtons = document.querySelectorAll('nav button');
     filterButtons.forEach(button => {
       button.addEventListener('click', () => {
@@ -366,6 +588,7 @@
       });
     });
 
+    // Busca
     document.getElementById('search').addEventListener('input', function() {
       const query = this.value.toLowerCase();
       const filtered = dishes.filter(d => d.name.toLowerCase().includes(query));
@@ -374,17 +597,47 @@
         const div = document.createElement('div');
         div.className = 'dish';
         div.innerHTML = `
+          ${isAdmin ? `<button class="delete-dish" data-name="${dish.name}">×</button>` : ''}
           <img src="#" alt="${dish.name}">
           <p>${dish.name}</p>
           <span>R$ ${dish.price.toFixed(2)}</span>
         `;
-        div.onclick = () => addToOrder(dish);
+        
+        if (!isAdmin) {
+          div.onclick = () => addToOrder(dish);
+        }
+        
         dishList.appendChild(div);
       });
+
+      // Adiciona eventos para os botões de deletar
+      if (isAdmin) {
+        document.querySelectorAll('.delete-dish').forEach(btn => {
+          btn.onclick = (e) => {
+            e.stopPropagation();
+            deleteDish(btn.dataset.name);
+          };
+        });
+      }
     });
 
+    // Botão de adicionar prato (visível apenas no modo admin)
+    document.addEventListener('click', (e) => {
+      if (isAdmin && e.target.classList.contains('dish-list')) {
+        addDishModal.style.display = 'flex';
+      }
+    });
+
+    // Fechar modais ao clicar fora
+    window.onclick = function(event) {
+      if (event.target.className === 'modal') {
+        event.target.style.display = 'none';
+      }
+    }
+
+    // Inicialização
     renderDishes();
-    renderOrder(); // para atualizar o botão finalizar na carga inicial
+    renderOrder();
   </script>
 </body>
 </html>
