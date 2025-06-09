@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pagamento - Jaegar Resto</title>
+    <title>Jaegar Resto - Tipo de Pedido</title>
     <style>
         body {
             margin: 0;
@@ -17,7 +17,58 @@
             min-height: 100vh;
         }
 
+        /* Modal de seleção inicial */
+        .selection-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.7);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+        }
+
+        .selection-content {
+            background-color: #2d303e;
+            padding: 30px;
+            border-radius: 12px;
+            text-align: center;
+            max-width: 300px;
+            width: 90%;
+        }
+
+        .selection-content h2 {
+            margin-bottom: 20px;
+        }
+
+        .selection-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-top: 25px;
+        }
+
+        .selection-btn {
+            background-color: #ea7c69;
+            border: none;
+            padding: 12px;
+            border-radius: 10px;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .selection-btn:hover {
+            background-color: #d86a58;
+        }
+
+        /* O resto do seu CSS original permanece aqui */
         .container {
+            display: none; /* Esconde a tela de pagamento inicialmente */
             background-color: #2d303e;
             padding: 30px;
             border-radius: 12px;
@@ -26,7 +77,7 @@
             max-width: 400px;
             text-align: center;
         }
-
+        
         h1 {
             margin-bottom: 10px;
         }
@@ -49,7 +100,7 @@
             cursor: pointer;
             display: flex;
             align-items: center;
-            justify-content: space-between;
+            gap: 10px;
             transition: background-color 0.3s;
         }
 
@@ -58,7 +109,7 @@
         }
 
         input[type="radio"] {
-            margin-right: 10px;
+            order: -1;
             accent-color: #ea7c69;
         }
 
@@ -79,50 +130,6 @@
             background-color: #d86a58;
         }
 
-        /* Modal */
-        .modal {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0,0,0,0.7);
-            display: none;
-            align-items: center;
-            justify-content: center;
-            z-index: 1000;
-        }
-
-        .modal-content {
-            background-color: #2d303e;
-            padding: 30px;
-            border-radius: 12px;
-            text-align: center;
-            max-width: 300px;
-        }
-
-        .modal-content h2 {
-            margin-bottom: 10px;
-        }
-
-        .modal-content p {
-            color: #ccc;
-            margin-bottom: 20px;
-        }
-
-        .modal-content button {
-            background-color: #ea7c69;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 8px;
-            color: white;
-            font-weight: bold;
-            cursor: pointer;
-        }
-
-        .modal-content button:hover {
-            background-color: #d86a58;
-        }
         .botoes {
             position: fixed;
             bottom: 0;
@@ -144,29 +151,51 @@
             height: 24px;
          }
         }
+        .payment-images{
+            height: 35px;
+            width: 35px;
+        }
     </style>
 </head>
 <body>
 
-    <div class="container">
+    <!-- Modal de seleção inicial -->
+    <div class="selection-modal" id="selectionModal">
+        <div class="selection-content">
+            <h2>Como você prefere?</h2>
+            <p>Selecione o tipo de pedido:</p>
+            
+            <div class="selection-buttons">
+                <button class="selection-btn" onclick="selectDelivery(true)">Delivery</button>
+                <button class="selection-btn" onclick="selectDelivery(false)">Comer no Local</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sua tela de pagamento original (inicialmente escondida) -->
+    <div class="container" id="paymentContainer">
         <h1>Pagamento</h1>
         <p>Selecione a forma de pagamento</p>
 
         <div class="payment-method">
             <label>
                 <input type="radio" name="payment" value="pix" checked>
+                <img class="payment-images" src="imagem/pix.svg">
                 Pix
             </label>
             <label>
                 <input type="radio" name="payment" value="credito">
+                <img class="payment-images" src="imagem/cartão.svg">
                 Cartão de Crédito
             </label>
             <label>
                 <input type="radio" name="payment" value="debito">
+                <img class="payment-images" src="imagem/cartão.svg">
                 Cartão de Débito
             </label>
             <label>
                 <input type="radio" name="payment" value="dinheiro">
+                <img class="payment-images" src="imagem/dinheiro.svg">
                 Dinheiro
             </label>
         </div>
@@ -174,14 +203,6 @@
         <button class="btn" onclick="confirmarPagamento()">Confirmar Pagamento</button>
     </div>
 
-    <!-- Modal -->
-    <div class="modal" id="modal">
-        <div class="modal-content">
-            <h2>Pagamento Confirmado!</h2>
-            <p>Obrigado pela preferência.</p>
-            <button onclick="fecharModal()">Voltar ao Início</button>
-        </div>
-    </div>
     <div class="botoes">
         <a href="#"><img class="imgbotoes" src="imagem/Paypal.svg" alt="Delivery"></a>
         <a href="#"><img class="imgbotoes" src="imagem/search.svg" alt="Comida"></a>
@@ -189,19 +210,31 @@
         <a href="#"><img class="imgbotoes" src="imagem/Notification.svg" alt="Notificações"></a>
         <a href="#"><img class="imgbotoes" src="imagem/Customer.svg" alt="Perfil"></a>
     </div>
+
     <script>
+        // Função para lidar com a seleção inicial
+        function selectDelivery(isDelivery) {
+            const selectionModal = document.getElementById('selectionModal');
+            const paymentContainer = document.getElementById('paymentContainer');
+            
+            if (isDelivery) {
+                // Se for delivery, mostra a tela de pagamento
+                selectionModal.style.display = 'none';
+                paymentContainer.style.display = 'block';
+            } else {
+                // Se for comer no local, redireciona para outra página
+                window.location.href = "mensagem-confirmação.html";
+            }
+        }
+        // Função modificada para redirecionar diretamente
         function confirmarPagamento() {
-            const pagamento = document.querySelector('input[name="payment"]:checked').value;
-            const modal = document.getElementById('modal');
-            modal.style.display = 'flex';
+            window.location.href = "mensagem-confirmação.html";
         }
 
-        function fecharModal() {
-            const modal = document.getElementById('modal');
-            modal.style.display = 'none';
-            window.location.href = "Pagamento.html"; // Voltar para a página inicial
-        }
+        // Esconde a tela de pagamento inicialmente
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('paymentContainer').style.display = 'none';
+        });
     </script>
-
 </body>
 </html>
