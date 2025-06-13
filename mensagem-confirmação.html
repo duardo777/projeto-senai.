@@ -60,5 +60,17 @@
         <p><small>Obrigado por escolher o Jaegar Resto. Volte sempre!</small></p>
         <button class="btn" onclick="window.location.href='index.html'">Voltar ao Início</button>
     </div>
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        const orderType = urlParams.get('type'); // 'delivery' ou 'local'
+        const paymentMethod = urlParams.get('payment'); // 'pix', 'credito', etc.
+
+        // Exemplo de uso:
+        if (orderType === 'delivery') {
+           console.log(`Pedido delivery com pagamento via ${paymentMethod}`);
+        } else {
+           console.log(`Pedido no local com pagamento via ${paymentMethod}`);
+        }
+    </script>
 </body>
 </html>

@@ -212,29 +212,26 @@
     </div>
 
     <script>
-        // Função para lidar com a seleção inicial
-        function selectDelivery(isDelivery) {
-            const selectionModal = document.getElementById('selectionModal');
-            const paymentContainer = document.getElementById('paymentContainer');
-            
-            if (isDelivery) {
-                // Se for delivery, mostra a tela de pagamento
-                selectionModal.style.display = 'none';
-                paymentContainer.style.display = 'block';
-            } else {
-                // Se for comer no local, redireciona para outra página
-                window.location.href = "mensagem-confirmação.html";
-            }
-        }
-        // Função modificada para redirecionar diretamente
-        function confirmarPagamento() {
-            window.location.href = "mensagem-confirmação.html";
-        }
+        // Armazenar a escolha do usuário
+let orderType = null;
 
-        // Esconde a tela de pagamento inicialmente
-        document.addEventListener('DOMContentLoaded', function() {
-            document.getElementById('paymentContainer').style.display = 'none';
-        });
+function selectDelivery(isDelivery) {
+    orderType = isDelivery ? 'delivery' : 'local';
+    const selectionModal = document.getElementById('selectionModal');
+    const paymentContainer = document.getElementById('paymentContainer');
+    
+    if (isDelivery) {
+        selectionModal.style.display = 'none';
+        paymentContainer.style.display = 'block';
+    } else {
+        window.location.href = "mensagem-confirmação.html?type=local";
+    }
+}
+
+function confirmarPagamento() {
+    const selectedPayment = document.querySelector('input[name="payment"]:checked').value;
+    window.location.href = `mensagem-confirmação.html?type=delivery&payment=${selectedPayment}`;
+}
     </script>
 </body>
 </html>
