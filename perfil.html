@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Perfil - Jaegar Resto</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: sans-serif;
+            background-color: #252836;
+            color: #fff;
+            min-height: 100vh;
+            padding-bottom: 70px;
+        }
+
+        header {
+            padding: 20px;
+            background-color: #1F1D2B;
+            text-align: center;
+            position: relative;
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 24px;
+        }
+
+        .profile-container {
+            max-width: 500px;
+            margin: 20px auto;
+            background-color: #2D303E;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+        }
+
+        .profile-header {
+            position: relative;
+            height: 120px;
+            background-color: #EA7C69;
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+            padding-bottom: 20px;
+        }
+
+        .profile-pic {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            border: 4px solid #2D303E;
+            background-color: #393C49;
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            object-fit: cover;
+        }
+
+        .profile-info {
+            padding: 70px 20px 20px;
+            text-align: center;
+        }
+
+        .profile-name {
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .profile-email {
+            color: #aaa;
+            margin-bottom: 20px;
+        }
+
+        .stats {
+            display: flex;
+            justify-content: space-around;
+            padding: 15px 0;
+            border-top: 1px solid #393C49;
+            border-bottom: 1px solid #393C49;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 18px;
+            font-weight: bold;
+            color: #EA7C69;
+        }
+
+        .stat-label {
+            font-size: 12px;
+            color: #aaa;
+        }
+
+        .menu-section {
+            padding: 20px;
+        }
+
+        .menu-title {
+            font-size: 18px;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+        }
+
+        .menu-title i {
+            margin-right: 10px;
+            color: #EA7C69;
+        }
+
+        .menu-item {
+            display: flex;
+            align-items: center;
+            padding: 15px 0;
+            border-bottom: 1px solid #393C49;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .menu-item:hover {
+            background-color: rgba(57, 60, 73, 0.5);
+        }
+
+        .menu-item i {
+            width: 30px;
+            text-align: center;
+            margin-right: 15px;
+            font-size: 20px;
+        }
+
+        .menu-item-text {
+            flex: 1;
+        }
+
+        .menu-item-arrow {
+            color: #aaa;
+        }
+
+        .order-history {
+            padding: 20px;
+        }
+
+        .order-card {
+            background-color: #393C49;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 15px;
+        }
+
+        .order-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+
+        .order-date {
+            color: #aaa;
+            font-size: 14px;
+        }
+
+        .order-status {
+            background-color: #EA7C69;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+        }
+
+        .order-items {
+            color: #ccc;
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+
+        .order-total {
+            text-align: right;
+            font-weight: bold;
+        }
+
+        .botoes {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            height: 70px;
+            background-color: rgb(32, 28, 44);
+            display: flex;
+            justify-content: space-evenly;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .imgbotoes {
+            width: 30px;
+            height: 30px;
+        }
+
+        @media (max-width: 400px) {
+            .imgbotoes {
+                width: 24px;
+                height: 24px;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <header>
+        <h1>Meu Perfil</h1>
+    </header>
+
+    <div class="profile-container">
+        <div class="profile-header">
+            <img src="https://i.imgur.com/6VBx3io.png" alt="Foto de perfil" class="profile-pic">
+        </div>
+        
+        <div class="profile-info">
+            <div class="profile-name">João Silva</div>
+            <div class="profile-email">joao.silva@email.com</div>
+        </div>
+        
+        <div class="stats">
+            <div class="stat-item">
+                <div class="stat-value">15</div>
+                <div class="stat-label">Pedidos</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value">4.8</div>
+                <div class="stat-label">Avaliação</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value">R$ 1.2k</div>
+                <div class="stat-label">Gastos</div>
+            </div>
+        </div>
+        
+        <div class="menu-section">
+            <div class="menu-title"><i class="fas fa-cog"></i> Configurações</div>
+            
+            <div class="menu-item">
+                <i class="fas fa-user-edit"></i>
+                <div class="menu-item-text">Editar Perfil</div>
+                <div class="menu-item-arrow"><i class="fas fa-chevron-right"></i></div>
+            </div>
+            
+            <div class="menu-item">
+                <i class="fas fa-map-marker-alt"></i>
+                <div class="menu-item-text">Meus Endereços</div>
+                <div class="menu-item-arrow"><i class="fas fa-chevron-right"></i></div>
+            </div>
+            
+            <div class="menu-item">
+                <i class="fas fa-credit-card"></i>
+                <div class="menu-item-text">Formas de Pagamento</div>
+                <div class="menu-item-arrow"><i class="fas fa-chevron-right"></i></div>
+            </div>
+            
+            <div class="menu-item">
+                <i class="fas fa-gift"></i>
+                <div class="menu-item-text">Cupons e Promoções</div>
+                <div class="menu-item-arrow"><i class="fas fa-chevron-right"></i></div>
+            </div>
+        </div>
+        
+        <div class="menu-section">
+            <div class="menu-title"><i class="fas fa-headset"></i> Suporte</div>
+            
+            <div class="menu-item">
+                <i class="fas fa-question-circle"></i>
+                <div class="menu-item-text">Ajuda</div>
+                <div class="menu-item-arrow"><i class="fas fa-chevron-right"></i></div>
+            </div>
+            
+            <div class="menu-item">
+                <i class="fas fa-comment-alt"></i>
+                <div class="menu-item-text">Fale Conosco</div>
+                <div class="menu-item-arrow"><i class="fas fa-chevron-right"></i></div>
+            </div>
+            
+            <div class="menu-item">
+                <i class="fas fa-sign-out-alt"></i>
+                <div class="menu-item-text">Sair</div>
+                <div class="menu-item-arrow"><i class="fas fa-chevron-right"></i></div>
+            </div>
+        </div>
+        
+        <div class="order-history">
+            <div class="menu-title"><i class="fas fa-history"></i> Histórico de Pedidos</div>
+            
+            <div class="order-card">
+                <div class="order-header">
+                    <div class="order-date">10/06/2023 - 19:30</div>
+                    <div class="order-status">Entregue</div>
+                </div>
+                <div class="order-items">
+                    X-Tudo, Batata Frita, Coca-Cola 2L
+                </div>
+                <div class="order-total">
+                    R$ 58,90
+                </div>
+            </div>
+            
+            <div class="order-card">
+                <div class="order-header">
+                    <div class="order-date">05/06/2023 - 12:15</div>
+                    <div class="order-status">Entregue</div>
+                </div>
+                <div class="order-items">
+                    Espetinho de Picanha, Porção de Torresmo, Cerveja
+                </div>
+                <div class="order-total">
+                    R$ 86,50
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="botoes">
+        <a href="Pagamento.html"><img class="imgbotoes" src="imagem/Paypal.svg" alt="Delivery"></a>
+        <a href="Cardapio.html"><img class="imgbotoes" src="imagem/search.svg" alt="Comida"></a>
+        <a href="menu principal.html"><img class="imgbotoes" src="imagem/Home.svg" alt="Início"></a>
+        <a href="notificação.html"><img class="imgbotoes" src="imagem/Notification.svg" alt="Notificações"></a>
+        <a href="perfil.html"><img class="imgbotoes" src="imagem/Customer.svg" alt="Perfil"></a>
+    </div>
+
+    <script>
+        // Aqui você pode adicionar funcionalidades como:
+        // - Carregar dados reais do usuário
+        // - Buscar histórico de pedidos
+        // - Implementar logout, etc.
+        
+        // Exemplo de carregamento de dados do usuário
+        document.addEventListener('DOMContentLoaded', function() {
+            // Simulando dados do usuário
+            const userData = {
+                name: "João Silva",
+                email: "joao.silva@email.com",
+                orders: 15,
+                rating: 4.8,
+                totalSpent: 1200
+            };
+            
+            // Atualizando a UI com os dados
+            document.querySelector('.profile-name').textContent = userData.name;
+            document.querySelector('.profile-email').textContent = userData.email;
+            document.querySelectorAll('.stat-value')[0].textContent = userData.orders;
+            document.querySelectorAll('.stat-value')[1].textContent = userData.rating;
+            document.querySelectorAll('.stat-value')[2].textContent = `R$ ${(userData.totalSpent / 1000).toFixed(1)}k`;
+            
+            // Adicionando eventos aos itens do menu
+            document.querySelectorAll('.menu-item').forEach(item => {
+                item.addEventListener('click', function() {
+                    const action = this.querySelector('.menu-item-text').textContent;
+                    alert(`Ação: ${action}`);
+                    // Aqui você pode implementar a navegação para cada seção
+                });
+            });
+        });
+    </script>
+</body>
+</html>

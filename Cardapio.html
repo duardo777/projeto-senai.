@@ -377,11 +377,11 @@
   </div>
 
   <div class="botoes">
-    <a href="#"><img class="imgbotoes" src="imagem/Paypal.svg" alt="Delivery"></a>
-    <a href="#"><img class="imgbotoes" src="imagem/search.svg" alt="Comida"></a>
-    <a href="#"><img class="imgbotoes" src="imagem/Home.svg" alt="Início"></a>
-    <a href="#"><img class="imgbotoes" src="imagem/Notification.svg" alt="Notificações"></a>
-    <a href="#"><img class="imgbotoes" src="imagem/Customer.svg" alt="Perfil"></a>
+    <a href="Pagamento.html"><img class="imgbotoes" src="imagem/Paypal.svg" alt="Delivery"></a>
+    <a href="Cardapio.html"><img class="imgbotoes" src="imagem/search.svg" alt="Comida"></a>
+    <a href="menu principal.html"><img class="imgbotoes" src="imagem/Home.svg" alt="Início"></a>
+    <a href="notificação.html"><img class="imgbotoes" src="imagem/Notification.svg" alt="Notificações"></a>
+    <a href="perfil.html"><img class="imgbotoes" src="imagem/Customer.svg" alt="Perfil"></a>
   </div>
 
   <script>
@@ -569,8 +569,16 @@
 
     // Event Listeners
     finalizeBtn.onclick = () => {
-      window.location.href = "Pagamento.html";
-    };
+    // Verifica se há itens no pedido
+    if (Object.keys(order).length === 0) {
+        alert('Adicione itens ao pedido antes de finalizar!');
+        return;
+    }
+    
+    // Salva o pedido no localStorage antes de redirecionar
+    localStorage.setItem('currentOrder', JSON.stringify(order));
+    window.location.href = "Pagamento.html";
+};
 
     adminBtn.onclick = toggleAdminMode;
 

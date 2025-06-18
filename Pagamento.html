@@ -66,9 +66,9 @@
             background-color: #d86a58;
         }
 
-        /* O resto do seu CSS original permanece aqui */
+        /* Container principal */
         .container {
-            display: none; /* Esconde a tela de pagamento inicialmente */
+            display: none;
             background-color: #2d303e;
             padding: 30px;
             border-radius: 12px;
@@ -76,6 +76,7 @@
             width: 90%;
             max-width: 400px;
             text-align: center;
+            margin-bottom: 80px;
         }
         
         h1 {
@@ -91,6 +92,7 @@
             display: flex;
             flex-direction: column;
             gap: 15px;
+            margin-top: 20px;
         }
 
         label {
@@ -155,6 +157,106 @@
             height: 35px;
             width: 35px;
         }
+        
+        /* Seção de endereço */
+        .address-section {
+            display: none;
+            margin-top: 20px;
+            text-align: left;
+        }
+        
+        .address-section h3 {
+            margin-bottom: 15px;
+            color: #fff;
+        }
+        
+        .address-input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border-radius: 8px;
+            border: none;
+            background-color: #393c49;
+            color: #fff;
+        }
+        
+        .address-input::placeholder {
+            color: #aaa;
+        }
+        
+        .city-info {
+            font-size: 12px;
+            color: #aaa;
+            margin-bottom: 15px;
+        }
+        
+        /* Seção do pedido */
+        .order-section {
+            margin-bottom: 20px;
+            text-align: left;
+            border-bottom: 1px solid #393c49;
+            padding-bottom: 20px;
+        }
+        
+        .order-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+        
+        .item-name {
+            color: #fff;
+        }
+        
+        .item-price {
+            color: #ea7c69;
+        }
+        
+        .order-total {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 15px;
+            font-weight: bold;
+            font-size: 18px;
+        }
+        
+        .total-label {
+            color: #fff;
+        }
+        
+        .total-value {
+            color: #ea7c69;
+        }
+        
+        /* Tabela de itens */
+        .order-items-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        
+        .order-items-table th, 
+        .order-items-table td {
+            padding: 8px;
+            text-align: left;
+            border-bottom: 1px solid #393c49;
+        }
+        
+        .order-items-table th {
+            color: #fff;
+        }
+        
+        .order-items-table td {
+            color: #ccc;
+        }
+        
+        .quantity-cell {
+            text-align: center;
+        }
+        
+        .price-cell {
+            text-align: right;
+        }
     </style>
 </head>
 <body>
@@ -172,10 +274,32 @@
         </div>
     </div>
 
-    <!-- Sua tela de pagamento original (inicialmente escondida) -->
+    <!-- Tela de pagamento -->
     <div class="container" id="paymentContainer">
         <h1>Pagamento</h1>
-        <p>Selecione a forma de pagamentos</p>
+        
+        <!-- Seção do pedido -->
+        <div class="order-section">
+            <h3>Seu Pedido</h3>
+            <table class="order-items-table">
+                <thead>
+                    <tr>
+                        <th>Item</th>
+                        <th class="quantity-cell">Qtd</th>
+                        <th class="price-cell">Preço</th>
+                    </tr>
+                </thead>
+                <tbody id="orderItemsTable">
+                    <!-- Itens do pedido serão inseridos aqui -->
+                </tbody>
+            </table>
+            <div class="order-total">
+                <span class="total-label">Total:</span>
+                <span class="total-value" id="orderTotal">R$ 0,00</span>
+            </div>
+        </div>
+        
+        <p>Selecione a forma de pagamento</p>
 
         <div class="payment-method">
             <label>
@@ -199,39 +323,155 @@
                 Dinheiro
             </label>
         </div>
+        
+        <!-- Seção de endereço (aparece apenas para delivery) -->
+        <div class="address-section" id="addressSection">
+            <h3>Endereço de Entrega</h3>
+            <p class="city-info">Ji-Paraná - RO</p>
+            <input type="text" class="address-input" id="bairro" placeholder="Bairro" required>
+            <input type="text" class="address-input" id="rua" placeholder="Rua" required>
+            <input type="text" class="address-input" id="numero" placeholder="Número" required>
+            <input type="text" class="address-input" id="complemento" placeholder="Complemento (opcional)">
+        </div>
 
         <button class="btn" onclick="confirmarPagamento()">Confirmar Pagamento</button>
     </div>
 
     <div class="botoes">
-        <a href="#"><img class="imgbotoes" src="imagem/Paypal.svg" alt="Delivery"></a>
-        <a href="#"><img class="imgbotoes" src="imagem/search.svg" alt="Comida"></a>
-        <a href="#"><img class="imgbotoes" src="imagem/Home.svg" alt="Início"></a>
-        <a href="#"><img class="imgbotoes" src="imagem/Notification.svg" alt="Notificações"></a>
-        <a href="#"><img class="imgbotoes" src="imagem/Customer.svg" alt="Perfil"></a>
+        <a href="Pagamento.html"><img class="imgbotoes" src="imagem/Paypal.svg" alt="Delivery"></a>
+        <a href="Cardapio.html"><img class="imgbotoes" src="imagem/search.svg" alt="Comida"></a>
+        <a href="menu principal.html"><img class="imgbotoes" src="imagem/Home.svg" alt="Início"></a>
+        <a href="notificação.html"><img class="imgbotoes" src="imagem/Notification.svg" alt="Notificações"></a>
+        <a href="perfil.html"><img class="imgbotoes" src="imagem/Customer.svg" alt="Perfil"></a>
     </div>
 
     <script>
         // Armazenar a escolha do usuário
-let orderType = null;
+        let orderType = null;
+        
+        // Obter os itens do pedido do localStorage
+        function getOrderItems() {
+            const order = JSON.parse(localStorage.getItem('currentOrder')) || {};
+            return order;
+        }
+        
+        // Calcular o total do pedido
+        function calculateTotal(order) {
+            let total = 0;
+            for (const itemName in order) {
+                const item = order[itemName];
+                total += item.price * item.quantity;
+            }
+            return total;
+        }
+        
+        // Exibir os itens do pedido
+        function displayOrderItems() {
+            const order = getOrderItems();
+            const orderItemsTable = document.getElementById('orderItemsTable');
+            const orderTotalElement = document.getElementById('orderTotal');
+            
+            // Limpa a tabela
+            orderItemsTable.innerHTML = '';
+            
+            // Adiciona cada item
+            for (const itemName in order) {
+                const item = order[itemName];
+                const row = document.createElement('tr');
+                
+                row.innerHTML = `
+                    <td>${itemName}</td>
+                    <td class="quantity-cell">${item.quantity}</td>
+                    <td class="price-cell">R$ ${(item.price * item.quantity).toFixed(2).replace('.', ',')}</td>
+                `;
+                
+                orderItemsTable.appendChild(row);
+            }
+            
+            // Atualiza o total
+            const total = calculateTotal(order);
+            orderTotalElement.textContent = `R$ ${total.toFixed(2).replace('.', ',')}`;
+        }
 
-function selectDelivery(isDelivery) {
-    orderType = isDelivery ? 'delivery' : 'local';
-    const selectionModal = document.getElementById('selectionModal');
-    const paymentContainer = document.getElementById('paymentContainer');
-    
-    if (isDelivery) {
-        selectionModal.style.display = 'none';
-        paymentContainer.style.display = 'block';
-    } else {
-        window.location.href = "mensagem-confirmação.html?type=local";
+        function selectDelivery(isDelivery) {
+            orderType = isDelivery ? 'delivery' : 'local';
+            const selectionModal = document.getElementById('selectionModal');
+            const paymentContainer = document.getElementById('paymentContainer');
+            const addressSection = document.getElementById('addressSection');
+            
+            selectionModal.style.display = 'none';
+            paymentContainer.style.display = 'block';
+            
+            if (isDelivery) {
+                addressSection.style.display = 'block';
+            } else {
+                addressSection.style.display = 'none';
+            }
+        }
+
+        function confirmarPagamento() {
+            const selectedPayment = document.querySelector('input[name="payment"]:checked').value;
+            
+            if (orderType === 'delivery') {
+                // Validar endereço
+                const bairro = document.getElementById('bairro').value;
+                const rua = document.getElementById('rua').value;
+                const numero = document.getElementById('numero').value;
+                
+                if (!bairro || !rua || !numero) {
+                    alert('Por favor, preencha pelo menos bairro, rua e número para entrega!');
+                    return;
+                }
+                
+                const complemento = document.getElementById('complemento').value;
+                const endereco = `Bairro: ${bairro}, Rua: ${rua}, Nº: ${numero}` + (complemento ? `, Complemento: ${complemento}` : '');
+                
+                window.location.href = `mensagem-confirmação.html?type=delivery&payment=${selectedPayment}&endereco=${encodeURIComponent(endereco)}`;
+            } else {
+                window.location.href = `mensagem-confirmação.html?type=local&payment=${selectedPayment}`;
+            }
+        }
+        function confirmarPagamento() {
+    const selectedPayment = document.querySelector('input[name="payment"]:checked').value;
+    const order = getOrderItems();
+    const total = calculateTotal(order);
+
+    // Criar notificação
+    const notification = {
+        type: 'order',
+        icon: '🍔',
+        message: `Pedido confirmado (${selectedPayment}) - Total: R$ ${total.toFixed(2)}`,
+        time: new Date(),
+        read: false,
+        orderDetails: order // Opcional: armazenar detalhes do pedido
+    };
+
+    // Salvar no localStorage para a página de notificações
+    const savedNotifications = JSON.parse(localStorage.getItem('notifications')) || [];
+    savedNotifications.push(notification);
+    localStorage.setItem('notifications', JSON.stringify(savedNotifications));
+
+    // Disparar evento para atualizar notificações em outras abas
+    localStorage.setItem('lastNotificationUpdate', Date.now());
+
+    // Resto do seu código original...
+    if (orderType === 'delivery') {
+        // ... (seu código existente)
     }
 }
-
-function confirmarPagamento() {
-    const selectedPayment = document.querySelector('input[name="payment"]:checked').value;
-    window.location.href = `mensagem-confirmação.html?type=delivery&payment=${selectedPayment}`;
-}
+        // Quando a página carrega, exibe os itens do pedido
+      window.onload = function() {
+    displayOrderItems();
+    
+    // Verifica se veio da página de cardápio com um pedido válido
+    const order = getOrderItems();
+    if (Object.keys(order).length === 0) {
+        alert('Seu pedido está vazio! Redirecionando para o cardápio...');
+        setTimeout(() => {
+            window.location.href = "Cardapio.html";
+        }, 1500);
+    }
+};
     </script>
 </body>
 </html>

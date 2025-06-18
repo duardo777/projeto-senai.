@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Jaegar Resto - Menu Principal</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: sans-serif;
+      background-color: #1f1d2b;
+      color: #fff;
+      min-height: 100vh;
+      margin-bottom: 75px;
+    }
+    
+    header {
+      padding: 20px;
+      background-color: #252836;
+      position: relative;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    .logo {
+      font-size: 24px;
+      font-weight: bold;
+    }
+    
+    .signup-btn {
+      background-color: #ea7c69;
+      color: white;
+      padding: 8px 16px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+    
+    .main-container {
+      padding: 20px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    
+    .section-title {
+      font-size: 20px;
+      margin: 30px 0 15px;
+      color: #fbbf24;
+    }
+    
+    .promo-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 20px;
+    }
+    
+    .promo-card {
+      background-color: #2d303e;
+      border-radius: 12px;
+      overflow: hidden;
+      transition: transform 0.3s;
+    }
+    
+    .promo-card:hover {
+      transform: translateY(-5px);
+    }
+    
+    .promo-img {
+      width: 100%;
+      height: 150px;
+      object-fit: cover;
+      background-color: #444;
+    }
+    
+    .promo-info {
+      padding: 15px;
+    }
+    
+    .promo-title {
+      margin: 0 0 8px;
+      font-size: 18px;
+    }
+    
+    .promo-price {
+      color: #ea7c69;
+      font-weight: bold;
+    }
+    
+    .promo-old-price {
+      text-decoration: line-through;
+      color: #aaa;
+      font-size: 14px;
+      margin-left: 8px;
+    }
+    
+    .popular-items {
+      display: flex;
+      overflow-x: auto;
+      gap: 15px;
+      padding: 10px 0;
+    }
+    
+    .popular-card {
+      min-width: 200px;
+      background-color: #2d303e;
+      border-radius: 12px;
+      padding: 15px;
+    }
+    
+    .popular-name {
+      margin: 0 0 8px;
+    }
+    
+    .popular-price {
+      color: #fbbf24;
+    }
+    
+    .order-count {
+      font-size: 12px;
+      color: #aaa;
+      margin-top: 8px;
+    }
+    
+    .botoes {
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+      height: 70px;
+      background-color: #252836;
+      display: flex;
+      justify-content: space-evenly;
+      align-items: center;
+      z-index: 1000;
+    }
+    
+    .imgbotoes {
+      width: 30px;
+      height: 30px;
+    }
+    
+    @media (max-width: 768px) {
+      .promo-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .popular-card {
+        min-width: 160px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo">Jaegar Resto</div>
+    <button class="signup-btn">Cadastre-se</button>
+  </header>
+  
+  <div class="main-container">
+    <h2 class="section-title">Promoções Imperdíveis</h2>
+    <div class="promo-grid">
+      <div class="promo-card">
+        <div class="promo-img"></div>
+        <div class="promo-info">
+          <h3 class="promo-title">Espetinho de Picanha + Bebida</h3>
+          <div>
+            <span class="promo-price">R$ 45,90</span>
+            <span class="promo-old-price">R$ 56,00</span>
+          </div>
+        </div>
+      </div>
+      
+      <div class="promo-card">
+        <div class="promo-img"></div>
+        <div class="promo-info">
+          <h3 class="promo-title">Pizza Grande + Refri 2L</h3>
+          <div>
+            <span class="promo-price">R$ 59,90</span>
+            <span class="promo-old-price">R$ 65,00</span>
+          </div>
+        </div>
+      </div>
+      
+      <div class="promo-card">
+        <div class="promo-img"></div>
+        <div class="promo-info">
+          <h3 class="promo-title">Combo Lanche + Batata</h3>
+          <div>
+            <span class="promo-price">R$ 32,90</span>
+            <span class="promo-old-price">R$ 38,00</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <h2 class="section-title">Mais Pedidos no App</h2>
+    <div class="popular-items">
+      <div class="popular-card">
+        <h3 class="popular-name">X-Tudo Completo</h3>
+        <div class="popular-price">R$ 23,00</div>
+        <div class="order-count">+120 pedidos esta semana</div>
+      </div>
+      
+      <div class="popular-card">
+        <h3 class="popular-name">Porção de Torresmo</h3>
+        <div class="popular-price">R$ 30,00</div>
+        <div class="order-count">+98 pedidos esta semana</div>
+      </div>
+      
+      <div class="popular-card">
+        <h3 class="popular-name">Espetinho de Picanha</h3>
+        <div class="popular-price">R$ 50,00</div>
+        <div class="order-count">+85 pedidos esta semana</div>
+      </div>
+      
+      <div class="popular-card">
+        <h3 class="popular-name">Coca-Cola 2L</h3>
+        <div class="popular-price">R$ 15,00</div>
+        <div class="order-count">+200 pedidos esta semana</div>
+      </div>
+    </div>
+    
+    <h2 class="section-title">Destaques da Semana</h2>
+    <div class="promo-grid">
+      <div class="promo-card">
+        <div class="promo-img"></div>
+        <div class="promo-info">
+          <h3 class="promo-title">Feijoada Completa</h3>
+          <div class="popular-price">R$ 20,00</div>
+        </div>
+      </div>
+      
+      <div class="promo-card">
+        <div class="promo-img"></div>
+        <div class="promo-info">
+          <h3 class="promo-title">Bolinho de Carne com Pimenta</h3>
+          <div class="popular-price">R$ 15,00</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="botoes">
+    <a href="Pagamento.html"><img class="imgbotoes" src="imagem/Paypal.svg" alt="Delivery"></a>
+    <a href="Cardapio.html"><img class="imgbotoes" src="imagem/search.svg" alt="Comida"></a>
+    <a href="menu principal.html"><img class="imgbotoes" src="imagem/Home.svg" alt="Início"></a>
+    <a href="notificação.html"><img class="imgbotoes" src="imagem/Notification.svg" alt="Notificações"></a>
+    <a href="perfil.html"><img class="imgbotoes" src="imagem/Customer.svg" alt="Perfil"></a>
+  </div>
+  
+  <script>
+    // Aqui você pode adicionar funcionalidades como:
+    // - Cadastro de usuário
+    // - Carregamento dinâmico dos itens mais pedidos
+    // - Interação com os cards de promoção
+    
+    document.querySelector('.signup-btn').addEventListener('click', function() {
+      // Implementar lógica de cadastro
+      alert('Redirecionando para página de cadastro...');
+      // window.location.href = "cadastro.html";
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de Notificações em Tempo Real</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #f5f5f5;
+        }
+
+        .notification-container {
+            position: relative;
+        }
+
+        .notification-btn {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 5px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            position: relative;
+        }
+
+        .notification-counter {
+            background-color: #f44336;
+            color: white;
+            border-radius: 50%;
+            padding: 2px 8px;
+            font-size: 12px;
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            display: none;
+        }
+
+        .notification-dropdown {
+            display: none;
+            position: absolute;
+            right: 0;
+            top: 50px;
+            width: 350px;
+            background-color: white;
+            border-radius: 5px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            z-index: 100;
+        }
+
+        .notification-dropdown.show {
+            display: block;
+        }
+
+        .notification-header {
+            padding: 15px;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .notification-header h3 {
+            margin: 0;
+            font-size: 18px;
+        }
+
+        .mark-read-btn {
+            background: none;
+            border: none;
+            color: #4CAF50;
+            cursor: pointer;
+            font-size: 12px;
+        }
+
+        .notification-list {
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .notification-item {
+            padding: 15px;
+            border-bottom: 1px solid #eee;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .notification-item.unread {
+            background-color: #f9f9f9;
+            font-weight: bold;
+        }
+
+        .notification-item.new {
+            animation: highlight 2s;
+        }
+
+        .notification-item:hover {
+            background-color: #f0f0f0;
+        }
+
+        .notification-content {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+        }
+
+        .notification-icon {
+            font-size: 20px;
+            margin-top: 2px;
+        }
+
+        .notification-text {
+            flex: 1;
+        }
+
+        .notification-time {
+            font-size: 12px;
+            color: #777;
+            margin-top: 5px;
+            text-align: right;
+        }
+
+        .no-notifications {
+            padding: 20px;
+            text-align: center;
+            color: #777;
+        }
+
+        @keyframes highlight {
+            0% { background-color: rgba(255, 255, 0, 0.3); }
+            100% { background-color: transparent; }
+        }
+
+        @keyframes shake {
+            0% { transform: rotate(0deg); }
+            25% { transform: rotate(5deg); }
+            50% { transform: rotate(0deg); }
+            75% { transform: rotate(-5deg); }
+            100% { transform: rotate(0deg); }
+        }
+
+        /* Estilo para o simulador */
+        .simulator {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: white;
+            padding: 15px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            z-index: 1000;
+        }
+
+        .simulator h3 {
+            margin-top: 0;
+        }
+
+        .simulator button {
+            background-color: #2196F3;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 3px;
+            cursor: pointer;
+            margin-right: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="notification-container">
+        <button id="notification-btn" class="notification-btn">
+            🔔 Notificações
+            <span id="notification-counter" class="notification-counter">0</span>
+        </button>
+        
+        <div id="notification-dropdown" class="notification-dropdown">
+            <div class="notification-header">
+                <h3>Notificações</h3>
+                <button id="mark-all-read" class="mark-read-btn">Marcar todas como lidas</button>
+            </div>
+            <div id="notification-list" class="notification-list">
+                <div class="no-notifications">Nenhuma notificação no momento</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Simulador de notificações (para demonstração) -->
+    <div class="simulator">
+        <h3>Simulador de Notificações</h3>
+        <button id="simulate-message">Nova Mensagem</button>
+        <button id="simulate-alert">Alerta do Sistema</button>
+        <button id="simulate-update">Atualização</button>
+        <button id="simulate-random">Aleatória</button>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const notificationBtn = document.getElementById('notification-btn');
+            const notificationDropdown = document.getElementById('notification-dropdown');
+            const notificationList = document.getElementById('notification-list');
+            const notificationCounter = document.getElementById('notification-counter');
+            const markAllReadBtn = document.getElementById('mark-all-read');
+            
+            // Elementos do simulador
+            const simulateMessageBtn = document.getElementById('simulate-message');
+            const simulateAlertBtn = document.getElementById('simulate-alert');
+            const simulateUpdateBtn = document.getElementById('simulate-update');
+            const simulateRandomBtn = document.getElementById('simulate-random');
+            
+            // Estado das notificações
+            let notifications = [];
+            
+            // Tipos de notificações
+            const notificationTypes = {
+                message: {
+                    icon: '✉️',
+                    messages: [
+                        "Você tem uma nova mensagem de João",
+                        "Nova mensagem no chat geral",
+                        "Mensagem importante recebida",
+                        "Novo e-mail na sua caixa de entrada"
+                    ]
+                },
+                alert: {
+                    icon: '⚠️',
+                    messages: [
+                        "Alerta do sistema: Atualização necessária",
+                        "Alerta de segurança: Verifique suas configurações",
+                        "Atenção: Seu armazenamento está quase cheio"
+                    ]
+                },
+                update: {
+                    icon: '🔄',
+                    messages: [
+                        "Nova atualização disponível",
+                        "Atualização instalada com sucesso",
+                        "Atualização do sistema em andamento"
+                    ]
+                },
+                random: {
+                    icon: '🔔',
+                    messages: [
+                        "Novo seguidor no seu perfil",
+                        "Seu relatório está pronto",
+                        "Lembrete: Reunião em 15 minutos",
+                        "Tarefa concluída com sucesso",
+                        "Novo comentário no seu post"
+                    ]
+                }
+            };
+            
+            // Atualizar contador
+            function updateCounter() {
+                const unreadCount = notifications.filter(n => !n.read).length;
+                notificationCounter.textContent = unreadCount;
+                
+                if (unreadCount > 0) {
+                    notificationCounter.style.display = 'inline-block';
+                } else {
+                    notificationCounter.style.display = 'none';
+                }
+            }
+            
+            // Formatar hora
+            function formatTime(date) {
+                const now = new Date();
+                const diff = Math.floor((now - date) / 1000); // diferença em segundos
+                
+                if (diff < 60) return "Agora mesmo";
+                if (diff < 3600) return `${Math.floor(diff/60)} minuto(s) atrás`;
+                if (diff < 86400) return `${Math.floor(diff/3600)} hora(s) atrás`;
+                return `${Math.floor(diff/86400)} dia(s) atrás`;
+            }
+            
+            // Adicionar nova notificação
+            function addNotification(type) {
+                const typeConfig = notificationTypes[type];
+                const newNotification = {
+                    id: Date.now(),
+                    type: type,
+                    icon: typeConfig.icon,
+                    message: typeConfig.messages[Math.floor(Math.random() * typeConfig.messages.length)],
+                    time: new Date(),
+                    read: false,
+                    new: true
+                };
+                
+                notifications.unshift(newNotification);
+                updateCounter();
+                renderNotifications();
+                
+                // Mostrar alerta visual se o dropdown não estiver aberto
+                if (!notificationDropdown.classList.contains('show')) {
+                    notificationBtn.style.animation = 'shake 0.5s';
+                    setTimeout(() => {
+                        notificationBtn.style.animation = '';
+                    }, 500);
+                    
+                    // Mostrar notificação toast
+                    showToastNotification(newNotification);
+                }
+                
+                // Remover a flag 'new' após 2 segundos
+                setTimeout(() => {
+                    newNotification.new = false;
+                    renderNotifications();
+                }, 2000);
+            }
+            
+            // Mostrar notificação toast
+            function showToastNotification(notification) {
+                const toast = document.createElement('div');
+                toast.className = 'toast-notification';
+                toast.style.position = 'fixed';
+                toast.style.bottom = '20px';
+                toast.style.left = '20px';
+                toast.style.backgroundColor = '#333';
+                toast.style.color = 'white';
+                toast.style.padding = '15px';
+                toast.style.borderRadius = '5px';
+                toast.style.boxShadow = '0 2px 10px rgba(0,0,0,0.2)';
+                toast.style.zIndex = '1000';
+                toast.style.display = 'flex';
+                toast.style.alignItems = 'center';
+                toast.style.gap = '10px';
+                toast.style.maxWidth = '300px';
+                toast.style.animation = 'fadeIn 0.3s';
+                toast.style.cursor = 'pointer';
+                
+                toast.innerHTML = `
+                    <span style="font-size: 20px;">${notification.icon}</span>
+                    <div>
+                        <div>${notification.message}</div>
+                        <div style="font-size: 12px; color: #aaa;">${formatTime(notification.time)}</div>
+                    </div>
+                `;
+                
+                document.body.appendChild(toast);
+                
+                // Click para abrir notificações
+                toast.addEventListener('click', () => {
+                    notificationDropdown.classList.add('show');
+                    toast.remove();
+                });
+                
+                // Remover após 5 segundos
+                setTimeout(() => {
+                    toast.style.animation = 'fadeOut 0.3s';
+                    setTimeout(() => {
+                        toast.remove();
+                    }, 300);
+                }, 5000);
+            }
+            
+            // Renderizar notificações
+            function renderNotifications() {
+                if (notifications.length === 0) {
+                    notificationList.innerHTML = '<div class="no-notifications">Nenhuma notificação no momento</div>';
+                    return;
+                }
+                
+                notificationList.innerHTML = '';
+                
+                notifications.forEach(notification => {
+                    const notificationItem = document.createElement('div');
+                    notificationItem.className = `notification-item ${notification.read ? '' : 'unread'} ${notification.new ? 'new' : ''}`;
+                    
+                    notificationItem.innerHTML = `
+                        <div class="notification-content">
+                            <div class="notification-icon">${notification.icon}</div>
+                            <div class="notification-text">
+                                <div>${notification.message}</div>
+                                <div class="notification-time">${formatTime(notification.time)}</div>
+                            </div>
+                        </div>
+                    `;
+                    
+                    notificationItem.addEventListener('click', () => {
+                        if (!notification.read) {
+                            notification.read = true;
+                            updateCounter();
+                            notificationItem.classList.remove('unread');
+                        }
+                    });
+                    
+                    notificationList.appendChild(notificationItem);
+                });
+            }
+            
+            // Alternar dropdown
+            notificationBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                notificationDropdown.classList.toggle('show');
+            });
+            
+            // Impedir que o dropdown feche ao clicar nele
+            notificationDropdown.addEventListener('click', (e) => {
+                e.stopPropagation();
+            });
+            
+            // Fechar dropdown ao clicar fora
+            document.addEventListener('click', () => {
+                notificationDropdown.classList.remove('show');
+            });
+            
+            // Marcar todas como lidas
+            markAllReadBtn.addEventListener('click', () => {
+                notifications.forEach(notification => {
+                    notification.read = true;
+                    notification.new = false;
+                });
+                updateCounter();
+                renderNotifications();
+            });
+            
+            // Eventos do simulador
+            simulateMessageBtn.addEventListener('click', () => addNotification('message'));
+            simulateAlertBtn.addEventListener('click', () => addNotification('alert'));
+            simulateUpdateBtn.addEventListener('click', () => addNotification('update'));
+            simulateRandomBtn.addEventListener('click', () => addNotification('random'));
+            
+            // Simular notificações periódicas (para demonstração)
+            setInterval(() => {
+                if (Math.random() > 0.7) { // 30% de chance de nova notificação
+                    const types = Object.keys(notificationTypes);
+                    const randomType = types[Math.floor(Math.random() * types.length)];
+                    addNotification(randomType);
+                }
+            }, 10000);
+            
+            // Adicionar estilos dinâmicos para as notificações toast
+            const style = document.createElement('style');
+            style.textContent = `
+                @keyframes fadeIn {
+                    from { opacity: 0; transform: translateY(20px); }
+                    to { opacity: 1; transform: translateY(0); }
+                }
+                @keyframes fadeOut {
+                    from { opacity: 1; transform: translateY(0); }
+                    to { opacity: 0; transform: translateY(20px); }
+                }
+                .toast-notification:hover {
+                    background-color: #444 !important;
+                }
+            `;
+            document.head.appendChild(style);
+            
+            // Inicializar
+            updateCounter();
+            renderNotifications();
+        });
+    </script>
+</body>
+</html>
