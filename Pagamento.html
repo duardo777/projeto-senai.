@@ -411,7 +411,27 @@
 
         function confirmarPagamento() {
             const selectedPayment = document.querySelector('input[name="payment"]:checked').value;
-            
+            const order = getOrderItems();
+            const total = calculateTotal(order);
+
+            // Criar notificação
+            const notification = {
+                type: 'order',
+                icon: '🍔',
+                message: `Pedido confirmado (${selectedPayment}) - Total: R$ ${total.toFixed(2)}`,
+                time: new Date(),
+                read: false,
+                orderDetails: order
+            };
+
+            // Salvar no localStorage para a página de notificações
+            const savedNotifications = JSON.parse(localStorage.getItem('notifications')) || [];
+            savedNotifications.push(notification);
+            localStorage.setItem('notifications', JSON.stringify(savedNotifications));
+
+            // Disparar evento para atualizar notificações em outras abas
+            localStorage.setItem('lastNotificationUpdate', Date.now());
+
             if (orderType === 'delivery') {
                 // Validar endereço
                 const bairro = document.getElementById('bairro').value;
@@ -426,52 +446,33 @@
                 const complemento = document.getElementById('complemento').value;
                 const endereco = `Bairro: ${bairro}, Rua: ${rua}, Nº: ${numero}` + (complemento ? `, Complemento: ${complemento}` : '');
                 
+                // Limpar o pedido atual do localStorage
+                localStorage.removeItem('currentOrder');
+                
+                // Redirecionar para a página de confirmação com os parâmetros
                 window.location.href = `mensagem-confirmação.html?type=delivery&payment=${selectedPayment}&endereco=${encodeURIComponent(endereco)}`;
             } else {
+                // Limpar o pedido atual do localStorage
+                localStorage.removeItem('currentOrder');
+                
+                // Redirecionar para a página de confirmação com os parâmetros
                 window.location.href = `mensagem-confirmação.html?type=local&payment=${selectedPayment}`;
             }
         }
-        function confirmarPagamento() {
-    const selectedPayment = document.querySelector('input[name="payment"]:checked').value;
-    const order = getOrderItems();
-    const total = calculateTotal(order);
 
-    // Criar notificação
-    const notification = {
-        type: 'order',
-        icon: '🍔',
-        message: `Pedido confirmado (${selectedPayment}) - Total: R$ ${total.toFixed(2)}`,
-        time: new Date(),
-        read: false,
-        orderDetails: order // Opcional: armazenar detalhes do pedido
-    };
-
-    // Salvar no localStorage para a página de notificações
-    const savedNotifications = JSON.parse(localStorage.getItem('notifications')) || [];
-    savedNotifications.push(notification);
-    localStorage.setItem('notifications', JSON.stringify(savedNotifications));
-
-    // Disparar evento para atualizar notificações em outras abas
-    localStorage.setItem('lastNotificationUpdate', Date.now());
-
-    // Resto do seu código original...
-    if (orderType === 'delivery') {
-        // ... (seu código existente)
-    }
-}
         // Quando a página carrega, exibe os itens do pedido
-      window.onload = function() {
-    displayOrderItems();
-    
-    // Verifica se veio da página de cardápio com um pedido válido
-    const order = getOrderItems();
-    if (Object.keys(order).length === 0) {
-        alert('Seu pedido está vazio! Redirecionando para o cardápio...');
-        setTimeout(() => {
-            window.location.href = "Cardapio.html";
-        }, 1500);
-    }
-};
+        window.onload = function() {
+            displayOrderItems();
+            
+            // Verifica se veio da página de cardápio com um pedido válido
+            const order = getOrderItems();
+            if (Object.keys(order).length === 0) {
+                alert('Seu pedido está vazio! Redirecionando para o cardápio...');
+                setTimeout(() => {
+                    window.location.href = "Cardapio.html";
+                }, 1500);
+            }
+        };
     </script>
 </body>
 </html>

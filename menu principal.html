@@ -139,6 +139,16 @@
       height: 30px;
     }
     
+    /* Novo estilo para o ícone de atalho */
+    .shortcut-icon {
+      position: absolute;
+      top: 20px;
+      right: 100px;
+      width: 24px;
+      height: 24px;
+      cursor: pointer;
+    }
+    
     @media (max-width: 768px) {
       .promo-grid {
         grid-template-columns: 1fr;
@@ -147,12 +157,19 @@
       .popular-card {
         min-width: 160px;
       }
+      
+      /* Ajuste para mobile */
+      .shortcut-icon {
+        right: 80px;
+      }
     }
   </style>
 </head>
 <body>
   <header>
     <div class="logo">Jaegar Resto</div>
+    <!-- Ícone de atalho adicionado aqui -->
+    <img src="imagem/Customer.svg" class="shortcut-icon" alt="Cadastro rápido" title="Ir para cadastro" onclick="window.location.href='cadastro.html'">
     <button class="signup-btn">Cadastre-se</button>
   </header>
   
@@ -249,15 +266,8 @@
   </div>
   
   <script>
-    // Aqui você pode adicionar funcionalidades como:
-    // - Cadastro de usuário
-    // - Carregamento dinâmico dos itens mais pedidos
-    // - Interação com os cards de promoção
-    
     document.querySelector('.signup-btn').addEventListener('click', function() {
-      // Implementar lógica de cadastro
-      alert('Redirecionando para página de cadastro...');
-      // window.location.href = "cadastro.html";
+      window.location.href = "cadastro.html";
     });
   </script>
 </body>
